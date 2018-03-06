@@ -12093,17 +12093,17 @@ Run the agent.py file after setting the flags from projects/smartcab folder inst
 <li><strong>Efficiency</strong> - To get a better efficiency the Agent should consider 'deadline' and 'waypoint'.</li>
 <li><p><strong>Both Safety and Efficiency</strong> - The most relevant features for learning both <strong>safety</strong> and <strong>efficiency</strong> include:</p>
 <ul>
-<li>'light' - 'light' helps the Agent to stop on the red thus avoiding an accident.</li>
-<li>'left' - 'left' helps the Agent to know where the vehicle on it's left intend to go.</li>
-<li>'right' - 'right' helps the Agent to know where the vehicle on it's right intend to go.</li>
+<li>'light' - 'light' helps the Agent to stop on the red thus avoiding an accident. Also, when the light is 'green' the smartcab Agent canoot idle thus getting negative rewards. So, light is a very important featur efor both 'safety' and 'relaibility'.</li>
+<li>'left' - 'left' helps the Agent to know where the vehicle on it's left intend to go. When the 'light' is 'red' the smartcab Agent can check it's left vehicle's intended direction to avoid an accident.</li>
+<li>'right' - 'right' helps the Agent to know where the vehicle on it's right intend to go. But, with US traffic rules, this may not add much value. But we will keep this features as the state space is not increased by a huge factor.</li>
 <li>'oncoming' - 'oncoming' traffic also helps the Agent to avoid accidents.</li>
-<li><p>'waypoint' - 'waypoint' helps the Agent to efficiently drive to its destination.</p>
-<p>A combination of the above features should help the Agent reach it's destination safly and efficiently.</p>
+<li><p>'waypoint' - 'waypoint' helps the Agent to know in which direction it has to travel in order to reach its destination. Without waypoint the smartcab Agent may drive randomly and not reach the intended point.</p>
+<p>A combination of the above features should help the Agent reach it's destination safely and efficiently.</p>
 </li>
 </ul>
 </li>
 </ul>
-<p>The other feature,  'deadline' also helps the Agent get better in terms of efficiency but given an option to choose the top features, I would consider above said features.</p>
+<p>The other feature, 'deadline' may help in real time. But, during testing I think with 'deadline' the smartcab Agent may take dangerous decisions in order to meet the deadline. Also the state space will become very big by adding the 'deadline' feature.</p>
 
 </div>
 </div>
@@ -12134,7 +12134,10 @@ Run the agent.py file after setting the flags from projects/smartcab folder inst
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>As we have chosen 'light', 'left', 'right', 'oncoming' and 'waypoint' we will have a total of 2 * 4 * 4 * 4 * 3 = 384 States. (2 states for 'light' - red and green; 4 states for 'left', 'right', 'oncoming' - 'None', 'left', 'right', 'forward'; 3 states for 'waypoint' - 'left', 'right', 'forward')</p>
+<ul>
+<li>As we have chosen 'light', 'left', 'right', 'oncoming' and 'waypoint' we will have a total of 2 * 4 * 4 * 4 * 3 = 384 States. (2 states for 'light' - red and green; 4 states for 'left', 'right', 'oncoming' - 'None', 'left', 'right', 'forward'; 3 states for 'waypoint' - 'left', 'right', 'forward')</li>
+<li>As the state space is not very huge, I think the smartcab Agent can learn the optimal policy for each state probably in few hundred trials.</li>
+</ul>
 
 </div>
 </div>
@@ -12368,9 +12371,9 @@ You may also use a decaying function for $\alpha$ (the learning rate) if you so 
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <ul>
-<li><em>What decaying function was used for epsilon (the exploration factor)?</em> - $\epsilon = e^{-at}, \textrm{for } 0 &lt; a &lt; 1$</li>
+<li><em>What decaying function was used for epsilon (the exploration factor)?</em> - $\epsilon = e^{-at}, \textrm{for } a = 0.02$</li>
 <li><em>Approximately how many training trials were needed for your agent before begining testing?</em> - Around 350 training trials were needed by the smartcab Agent.</li>
-<li><em>What epsilon-tolerance and alpha (learning rate) did you use? Why did you use them?</em> - </li>
+<li><em>What epsilon-tolerance and alpha (learning rate) did you use? Why did you use them?</em> - The alpha rate is set at 0.8 so as to make the learning of the smartcab Agent a bit aggresive. For the epsilon-tolerance, 0.001 was choose because with the slowly decaying function, the smartcab Agent will get good amount of time to learn about the environment.</li>
 <li><em>How much improvement was made with this Q-Learner when compared to the default Q-Learner from the previous section?</em> - There is a lot of improvement. The 'Bad Actions' dropped from around 0.36 to 0. The 'Rate of Reliability' increased from around 40% to close to 95%. The average reward per action increased from around -3 to +2.</li>
 <li><em>Would you say that the Q-Learner results show that your driving agent successfully learned an appropriate policy?</em> - With the high 'Safety Rating' and 'Reliability Rating', I can say that the smartcab Agent successfully learned an appropriate policy.</li>
 <li><em>Are you satisfied with the safety and reliability ratings of the <em>Smartcab</em>?</em> - With a 'Safety Rating' of <strong>A</strong> and a 'Reliability Rating' of <strong>A+</strong> I think the smartcab can be used in a real environment.</li>
@@ -12413,9 +12416,9 @@ You may also use a decaying function for $\alpha$ (the learning rate) if you so 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>The state space that we used here - (inputs['light'], inputs['oncoming'], inputs['left'], inputs['right'], waypoint)
-When the inputs['light'] is <strong>Red</strong> the optimal policy for the smartcab Agent action should be 'None'.
-When the inputs['light'] is <strong>Green</strong> the optimal policy for the smartcab Agent action should be 'Forward' unless inputs['oncoming'] is 'forward'.</p>
+<p>The state space that we used here - (inputs['light'], inputs['oncoming'], inputs['left'], inputs['right'], waypoint)</p>
+<p>When the inputs['light'] is <strong>Red</strong> and inputs['left'] is forward, the optimal policy for the smartcab Agent action should be 'None'.
+When the inputs['light'] is <strong>Green</strong> the optimal policy for the smartcab Agent action should be 'Forward'.</p>
 <p>For example, in the below Q-Learning state when the signal is 'red' moving forward gives a high negative reward. So, on 'red' the smartcab Agent is encouraged not to go 'forward'</p>
 <p>('red', 'left', None, 'left', 'forward')</p>
 <ul>
@@ -12432,13 +12435,13 @@ When the inputs['light'] is <strong>Green</strong> the optimal policy for the sm
 <li>-- None : -3.22</li>
 <li>-- left : -0.30</li>
 </ul>
-<p>For the below policy, the smartcab Agent would go 'forward' even when the oncoming traffic is 'forward'. Looks like the Agent is yet to learn an optimal policy.</p>
-<p>('green', 'forward', None, None, 'forward')</p>
+<p>For the below policy, the smartcab Agent wants to go 'left' and the signal is 'red'. But, the policy says the smartcab Agent can go 'right' moving it farther from the destination which makes it to learn a sub-optimal policy.</p>
+<p>('red', None, 'right', 'left', 'left')</p>
 <ul>
-<li>-- forward : 1.71</li>
-<li>-- right : 0.34</li>
-<li>-- None : -4.59</li>
-<li>-- left : -15.54</li>
+<li>-- forward : 0.00</li>
+<li>-- right : 1.64</li>
+<li>-- None : 0.00</li>
+<li>-- left : 0.00</li>
 </ul>
 
 </div>
@@ -12469,8 +12472,8 @@ When the inputs['light'] is <strong>Green</strong> the optimal policy for the sm
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <ul>
-<li>As the smartcab Agent is looking to avoid accident when moving from current place to the next it is more concerned about the current reward and future reward does not add much value.</li>
-<li>As the location of the smartcab Agent an d the destination are generated randomly by the environment future reward may not add much value.</li>
+<li>As the smartcab Agent is looking to avoid accident when moving from current place to the next it is more concerned about the current reward and future reward does not add much value. Also, as the smartcab Agent sees the environment differently for each new trial the distance between the destination and any specific states changes every time. As the smartcab Agent is more concerned with its actions at a specific intersection and doesn't know about the shortest path to its target we cannot propagate rewards towards states which are "close to the destination.</li>
+<li>As the location of the smartcab Agent and the destination are generated randomly by the environment future reward may not add much value. Also, the state of every signal and the direction of other cars are very random for each of the trial so providing a future reward for a destination and propogating it back does not help the smartcab Agent learn the best actions.</li>
 </ul>
 
 </div>
