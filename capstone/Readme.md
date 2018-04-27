@@ -70,6 +70,14 @@ We will use the below design flow to solve the above mentioned problem.
 - A Voting Classifier or Stacking Classifier will be used on the base models to get better predictions.
 - Hyper-Parameter tuning will be done to get better predictions.
 
+### Data
+
+- Train and Test data can be downloaded from Kaggle - https://www.kaggle.com/c/talkingdata-adtracking-fraud-detection/data
+
+### LightGBM Installation
+
+- Guide to install LightGBM - https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html
+
 ### References:
 
 - https://www.kaggle.com/c/talkingdata-adtracking-fraud-detection
